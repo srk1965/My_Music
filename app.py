@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return "Hello World"
+    return render_template('/audio_player.html')
 
 
 
