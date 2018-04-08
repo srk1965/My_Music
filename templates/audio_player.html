@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Custom Audio Player in JS</title>
+		<style>
+			body{
+	background: #f1e7e7;
+}
+
+.audio-player-cont{
+	width: 460px;
+	height: 160px;
+	background: #f3ebdc;
+	box-shadow: 0 0 6px 2px #c7a8a8;
+	color: #003ba9;
+	font-family: verdana;
+	font-size: 12px;
+
+	top:50%;
+	left:50%;
+	transform: translateX(-50%) translateY(-50%);
+	position: absolute;
+}
+
+.logo{
+	float:left;
+}
+
+.player{
+	float:right;
+	margin: 7px;
+}
+
+.song-title{
+	width: 300px;
+	padding: 5px 0px 5px 0px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.song-slider{
+	width: 300px;
+}
+
+.current-time{
+	float:left;
+	font-size: 10px;
+}
+
+.duration{
+	float:right;
+	font-size: 10px;
+}
+
+.controllers{
+	clear: both;
+	display: table;
+}
+
+.controllers *{
+	vertical-align: middle;
+	margin-right: 2px;
+}
+
+.volume-slider{
+	width: 90px;
+	margin-left:5px;
+}
+		</style>
+	</head>
+
+	<body>
+
+	
+<script type="text/javascript">
+	
+	function fun(value){
+		currentSong=value;
+		loadSong();
+		playOrPauseButton();
+	}
+</script>
+<font onclick="fun(0);">gumnaam</font>
+<font onclick="fun(1);">rolenede</font>
+<font onclick="fun(2);">roothe_kyu</font>
+	
+
+		<div class="audio-player-cont">
+			<div class="logo">
+				<img src="static/images/audio-player.png" id="vibrate" width="128px" height="128px" />
+			</div>
+			<div class="player">
+				<div id="songTitle" class="song-title">My Song title will goes here My Song title will goes here My Song title will goes here</div>
+				<input id="songSlider" class="song-slider" type="range" min="0" step="1" onchange="seekSong()" />
+				<div>
+					<div id="currentTime" class="current-time">00:00</div>
+					<div id="duration" class="duration">00:00</div>
+				</div>
+				<div class="controllers">
+					<img src="static/images/previous.png" width="30px" onclick="previous();" />
+					<img src="static/images/backward.png" width="30px" onclick="decreasePlaybackRate();" />
+					<img src="static/images/pause.png" id="playpause" width="40px" onclick="playOrPauseSong();" />
+					<img src="static/images/forward.png" width="30px" onclick="increasePlaybackRate();" />
+					<img src="static/images/next.png" width="30px" onclick="next();" />
+					<img src="static/images/volume-down.png" width="15px" />
+					<input id="volumeSlider" class="volume-slider" type="range" min="0" max="1" step="0.01" onchange="adjustVolume()" />
+					<img src="static/images/volume-up.png" width="15px" style="margin-left:2px;" />
+				</div>
+				<div id="nextSongTitle" class="song-title"><b>Next Song :</b>Next song title goes here...</div>
+			</div>
+		</div>
+		<script>
+			var songs = ["gumnaam.mp3",
+			"rolenede.mp3",
+			"rootha_kyu.mp3"
+			];
+
+var songTitle = document.getElementById('songTitle');
+var songSlider = document.getElementById('songSlider');
+var currentTime = document.getElementById('currentTime');
+var duration = document.getElementById('duration');
+var volumeSlider = document.getElementById('volumeSlider');
+var nextSongTitle = document.getElementById('nextSongTitle');
+
+var song = new Audio();
+var currentSong = 0;
+
+window.onload = loadSong;
+
+
+function loadSong () {
+	song.src = "static/songs/" + songs[currentSong];
+	songTitle.innerHTML = "<b>Play:</b>" + " " + songs[currentSong];
+	nextSongTitle.innerHTML = "<b>Next Song: </b>" + songs[currentSong + 1 % songs.length];
+	song.playbackRate = 1;
+	song.volume = volumeSlider.value;
+	song.play();
+	setTimeout(showDuration, 1000);
+}
+
+setInterval(updateSongSlider, 400);
+var b=0;
+function updateSongSlider () {
+	
+		if (!song.paused && b==0) {
+			document.getElementById("vibrate").width=135;
+			document.getElementById("vibrate").height=135;
+			b=1;	
+		}else{
+			document.getElementById("vibrate").width=128;
+			document.getElementById("vibrate").height=128;
+			b=0;
+		}
+		
+	
+	var c = Math.round(song.currentTime);
+	songSlider.value = c;
+	currentTime.textContent = convertTime(c);
+	if(song.ended){
+		next();
+	}
+}
+
+function convertTime (secs) {
+	var min = Math.floor(secs/60);
+	var sec = secs % 60;
+	min = (min < 10) ? "0" + min : min;
+	sec = (sec < 10) ? "0" + sec : sec;
+	return (min + ":" + sec);
+}
+
+function showDuration () {
+	var d = Math.floor(song.duration);
+	songSlider.setAttribute("max", d);
+	duration.textContent = convertTime(d);
+}
+
+function playOrPauseSong () {
+	song.playbackRate = 1;
+	if(song.paused){
+		song.play();
+		document.getElementById("playpause").src="static/images/pause.png";
+	}else{
+		song.pause();
+		document.getElementById("playpause").src="static/images/play.png";
+	}
+}
+function playOrPauseButton () {
+	
+	if(song.play){
+		
+		document.getElementById("playpause").src="static/images/pause.png";
+	}else{
+		
+		document.getElementById("playpause").src="static/images/play.png";
+	}
+}
+function next(){
+	if (currentSong==songs.length-1) {
+		currentSong=0;
+		loadSong();
+	}else{
+	currentSong = currentSong + 1;
+	loadSong();
+}
+playOrPauseButton();
+}
+
+function previous () {
+	currentSong--;
+	currentSong = (currentSong < 0) ? songs.length - 1 : currentSong;
+	loadSong();
+	playOrPauseButton();
+}
+
+function seekSong () {
+	song.currentTime = songSlider.value;
+	currentTime.textContent = convertTime(song.currentTime);
+}
+
+function adjustVolume () {
+	song.volume = volumeSlider.value;
+}
+
+function increasePlaybackRate () {
+	song.playbackRate += 0.5;
+}
+
+function decreasePlaybackRate () {
+	song.playbackRate -= 0.5;
+}
+
+
+
+
+		</script>
+	</body>
+</html>
