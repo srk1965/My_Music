@@ -139,7 +139,7 @@ window.onload = loadSong;
 
 function loadSong () {
 	song.src = songs[currentSong];
-	songTitle.innerHTML = "<b>Play:</b>" + " " + songs[currentSong];
+	songTitle.innerHTML = "<b>Current Song:</b>" + " " + songs[currentSong];
 	nextSongTitle.innerHTML = "<b>Next Song: </b>" + songs[currentSong + 1 % songs.length];
 	song.playbackRate = 1;
 	song.volume = volumeSlider.value;
@@ -181,16 +181,18 @@ function convertTime (secs) {
 function showDuration () {
 	var d = Math.floor(song.duration);
 	songSlider.setAttribute("max", d);
-	duration.textContent = convertTime(d);
+	duration.textContent = "Playing...";
 }
 
 function playOrPauseSong () {
 	song.playbackRate = 1;
 	if(song.paused){
 		song.play();
+		duration.textContent = "Playing...";
 		document.getElementById("playpause").src="static/images/pause.png";
 	}else{
 		song.pause();
+		duration.textContent = "Paused";
 		document.getElementById("playpause").src="static/images/play.png";
 	}
 }
