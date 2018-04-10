@@ -83,9 +83,13 @@
 		playOrPauseButton();
 	}
 </script>
-<font onclick="fun(0);">gumnaam</font>
-<font onclick="fun(1);">rolenede</font>
-<font onclick="fun(2);">roothe_kyu</font>
+<h3 onclick="fun(0);">Aashiq Banaya Aapne</h3>
+<h3 onclick="fun(1);">Naam Hai Mera</h3>
+<h3 onclick="fun(2);">Gumnaam Hai Koi</h3>
+<h3 onclick="fun(3);">Ro Lene De</h3>
+<h3 onclick="fun(4);">Rootha Kyu</h3>
+<h3 onclick="fun(5);">Tum Mere Ho</h3>
+
 	
 
 		<div class="audio-player-cont">
@@ -113,10 +117,12 @@
 			</div>
 		</div>
 		<script>
-			var songs = ["gumnaam.mp3",
-			"rolenede.mp3",
-			"rootha_kyu.mp3"
-			];
+			var songs = ["https://github.com/srk1965/my_music_songs/raw/master/aashiq%20banaya.mp3",
+			"https://github.com/srk1965/my_music_songs/raw/master/gumnaam.mp3",
+			"https://github.com/srk1965/my_music_songs/raw/master/naam%20hai%20mera.mp3",
+			"https://github.com/srk1965/my_music_songs/raw/master/rolenede.mp3",
+			"https://github.com/srk1965/my_music_songs/raw/master/rootha_kyu.mp3",
+			"https://github.com/srk1965/my_music_songs/raw/master/tum%20mere%20ho.mp3"];
 
 var songTitle = document.getElementById('songTitle');
 var songSlider = document.getElementById('songSlider');
@@ -132,7 +138,7 @@ window.onload = loadSong;
 
 
 function loadSong () {
-	song.src = "static/songs/" + songs[currentSong];
+	song.src = songs[currentSong];
 	songTitle.innerHTML = "<b>Play:</b>" + " " + songs[currentSong];
 	nextSongTitle.innerHTML = "<b>Next Song: </b>" + songs[currentSong + 1 % songs.length];
 	song.playbackRate = 1;
