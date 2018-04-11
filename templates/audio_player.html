@@ -81,14 +81,20 @@
 		currentSong=value;
 		loadSong();
 		playOrPauseButton();
+		for(var i=0;i<6;i++){
+			if (i!=value) {
+				document.getElementById("s"+i).style.color="black";
+			}
+		}
+		document.getElementById("s"+value).style.color="red";
 	}
 </script>
-<h3 onclick="fun(0);">Aashiq Banaya Aapne</h3>
-<h3 onclick="fun(1);">Naam Hai Mera</h3>
-<h3 onclick="fun(2);">Gumnaam Hai Koi</h3>
-<h3 onclick="fun(3);">Ro Lene De</h3>
-<h3 onclick="fun(4);">Rootha Kyu</h3>
-<h3 onclick="fun(5);">Tum Mere Ho</h3>
+<h3 onclick="fun(0);" id="s0">Aashiq Banaya Aapne</h3>
+<h3 onclick="fun(1);" id="s1">Naam Hai Mera</h3>
+<h3 onclick="fun(2);" id="s2">Gumnaam Hai Koi</h3>
+<h3 onclick="fun(3);" id="s3">Ro Lene De</h3>
+<h3 onclick="fun(4);" id="s4">Rootha Kyu</h3>
+<h3 onclick="fun(5);" id="s5">Tum Mere Ho</h3>
 
 	
 
@@ -117,12 +123,12 @@
 			</div>
 		</div>
 		<script>
-			var songs = ["https://github.com/srk1965/my_music_songs/raw/master/aashiq%20banaya.mp3",
-			"https://github.com/srk1965/my_music_songs/raw/master/gumnaam.mp3",
-			"https://github.com/srk1965/my_music_songs/raw/master/naam%20hai%20mera.mp3",
-			"https://github.com/srk1965/my_music_songs/raw/master/rolenede.mp3",
-			"https://github.com/srk1965/my_music_songs/raw/master/rootha_kyu.mp3",
-			"https://github.com/srk1965/my_music_songs/raw/master/tum%20mere%20ho.mp3"];
+			var songs = ["aashiq%20banaya.mp3",
+			"naam%20hai%20mera.mp3",
+			"gumnaam.mp3",
+			"rolenede.mp3",
+			"rootha_kyu.mp3",
+			"tum%20mere%20ho.mp3"];
 
 var songTitle = document.getElementById('songTitle');
 var songSlider = document.getElementById('songSlider');
@@ -138,9 +144,14 @@ window.onload = loadSong;
 
 
 function loadSong () {
-	song.src = songs[currentSong];
-	songTitle.innerHTML = "<b>Current Song:</b>" + " " + songs[currentSong];
-	nextSongTitle.innerHTML = "<b>Next Song: </b>" + songs[currentSong + 1 % songs.length];
+	document.getElementById("s0").style.color="red";
+	song.src = "https://github.com/srk1965/my_music_songs/raw/master/" + songs[currentSong];
+	songTitle.innerHTML = "<b>Current Song:</b>" + " " + songs[currentSong].replace("%20"," ").replace("%20"," ");
+	if (currentSong==songs.length-1) {
+		nextSongTitle.innerHTML = "<b>Next Song: </b>" + songs[0].replace("%20"," ").replace("%20"," ");	
+	}else{
+		nextSongTitle.innerHTML = "<b>Next Song: </b>" + songs[currentSong + 1].replace("%20"," ").replace("%20"," ");	
+	}
 	song.playbackRate = 1;
 	song.volume = volumeSlider.value;
 	song.play();
@@ -214,12 +225,14 @@ function next(){
 	currentSong = currentSong + 1;
 	loadSong();
 }
+fun(currentSong);
 playOrPauseButton();
 }
 
 function previous () {
 	currentSong--;
 	currentSong = (currentSong < 0) ? songs.length - 1 : currentSong;
+	fun(currentSong);
 	loadSong();
 	playOrPauseButton();
 }
