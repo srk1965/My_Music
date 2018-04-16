@@ -70,6 +70,10 @@
 	margin-left:5px;
 }
 		</style>
+
+
+
+
 	</head>
 
 	<body>
@@ -89,12 +93,45 @@
 		document.getElementById("s"+value).style.color="red";
 	}
 </script>
-<h3 onclick="fun(0);" id="s0">Aashiq Banaya Aapne</h3>
-<h3 onclick="fun(1);" id="s1">Naam Hai Mera</h3>
-<h3 onclick="fun(2);" id="s2">Gumnaam Hai Koi</h3>
-<h3 onclick="fun(3);" id="s3">Ro Lene De</h3>
-<h3 onclick="fun(4);" id="s4">Rootha Kyu</h3>
-<h3 onclick="fun(5);" id="s5">Tum Mere Ho</h3>
+
+
+<input id="myInput" type="text" onkeyup="myFunction();" placeholder="Search..">
+<ul id="myUL">
+	<li onclick="fun(0);" id="s0">Aashiq Banaya Aapne</li>
+	<li onclick="fun(1);" id="s1">Naam Hai Mera</li>
+	<li onclick="fun(2);" id="s2">Gumnaam Hai Koi</li>
+	<li onclick="fun(3);" id="s3">Ro Lene De</li>
+	<li onclick="fun(4);" id="s4">Rootha Kyu</li>
+	<li onclick="fun(5);" id="s5">Tum Mere Ho</li>
+	<h4 id="not_found"><i>Not Found!</i></h4>
+</ul>
+
+<script>
+var nf=document.getElementById("not_found");
+nf.style.visibility="hidden";
+function myFunction() {
+	nf.style.visibility="hidden";
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myUL");
+    li = ul.getElementsByTagName("li");
+    var p=0;
+    for (i = 0; i < li.length; i++) {
+        a = li[i];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+        p=p+1;
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+
+        }
+    }
+    if(p==0){
+    nf.style.visibility="visible";
+    }
+}
+</script>
 
 	
 
@@ -120,8 +157,11 @@
 					<img src="static/images/volume-up.png" width="15px" style="margin-left:2px;" />
 				</div>
 				<div id="nextSongTitle" class="song-title"><b>Next Song :</b>Next song title goes here...</div>
+				<a id="link" href ="" download><button class="btn btn-info">Download</button></a>
 			</div>
+
 		</div>
+					
 		<script>
 			var songs = ["aashiq%20banaya.mp3",
 			"naam%20hai%20mera.mp3",
@@ -144,8 +184,10 @@ window.onload = loadSong;
 
 
 function loadSong () {
+	document.getElementById("not_found").style.visibility="hidden";
 	document.getElementById("s0").style.color="red";
 	song.src = "https://github.com/srk1965/my_music_songs/raw/master/" + songs[currentSong];
+	var link=document.getElementById("link").href="https://github.com/srk1965/my_music_songs/raw/master/" + songs[currentSong];
 	songTitle.innerHTML = "<b>Current Song:</b>" + " " + songs[currentSong].replace("%20"," ").replace("%20"," ");
 	if (currentSong==songs.length-1) {
 		nextSongTitle.innerHTML = "<b>Next Song: </b>" + songs[0].replace("%20"," ").replace("%20"," ");	
